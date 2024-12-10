@@ -40,7 +40,15 @@ class LAVPEnv(gym.Env):
         self.current_user = 0
         self.time_steps = 0
 
-
+    # def get_spots(self):
+    #     return np.array([self.start_pos, self.cp_pos, self.user_pickup, self.user_dropoff])
+    def get_spots(self):
+        spots = np.concatenate(
+            [self.start_pos.reshape(1, -1), self.cp_pos.reshape(1, -1)] +
+            [pickup.reshape(1, -1) for pickup in self.user_pickup] +
+            [dropoff.reshape(1, -1) for dropoff in self.user_dropoff]
+        )
+        return spots
     def reset(self):
 
         self.agent_pos = np.copy(self.start_pos)
@@ -90,7 +98,34 @@ class LAVPEnv(gym.Env):
                 current - previous
             )
         }
+    def renderPath(self,path, mode='human'):
 
+        grid = np.full(self.grid_size, ' . ', )
+        
+
+        grid[self.agent_pos[0], self.agent_pos[1]] = 'A'
+        
+
+        
+        for pickup in self.user_pickup:
+            grid[pickup[0], pickup[1]] = 'P'
+        for dropoff in self.user_dropoff:
+            grid[dropoff[0], dropoff[1]] = 'D'    
+     
+        
+        # parking point
+        grid[self.cp_pos[0], self.cp_pos[1]] = 'C'
+        for i, pos in enumerate(path):
+            b=i+1
+
+
+            grid[pos[0], pos[1]] = f'{b}'
+        
+        # Print the grid
+
+        for row in grid:
+            print("  ".join(row))
+        print()
     def render(self, mode='human'):
         #prints to console
         grid = np.full(self.grid_size, '.', dtype=str)

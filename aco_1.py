@@ -81,8 +81,8 @@ class AntColony1:
                     if not probabilities or probabilities_sum == 0 :  #stuck
 
                         # env.renderPath(path)
-                        if len(path) == 1:
-                            continue
+                        # if len(path) == 1:
+                        #     continue
                         current_position = path[-2]
                         path.pop()
                         continue

@@ -78,7 +78,7 @@ class AntColony1:
 
                             probabilities.append((tau ** self.alpha) * (eta ** self.beta))
                     probabilities_sum = sum(probabilities)
-                    if not probabilities or probabilities_sum == 0 :  #stuck
+                    if not probabilities :  #stuck
 
                         # env.renderPath(path)
                         # if len(path) == 1:
@@ -91,8 +91,8 @@ class AntColony1:
 
 
                     
-                    # if probabilities_sum == 0:
-                    #     break
+                    if probabilities_sum == 0:
+                        break
 
                     probabilities = [p / probabilities_sum for p in probabilities]
 
